@@ -1,0 +1,51 @@
+local Player = game.Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = PlayerGui
+
+local BackgroundFrame = Instance.new("Frame")
+BackgroundFrame.Size = UDim2.new(1, 0, 1, 0)
+BackgroundFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+BackgroundFrame.BackgroundTransparency = 0.5
+BackgroundFrame.Parent = ScreenGui
+
+local LoadingText = Instance.new("TextLabel")
+LoadingText.Size = UDim2.new(1, 0, 0.1, 0)
+LoadingText.Position = UDim2.new(0, 0, 0.4, 0)
+LoadingText.Text = "Loading... Please Wait"
+LoadingText.TextSize = 30
+LoadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
+LoadingText.BackgroundTransparency = 1
+LoadingText.Parent = BackgroundFrame
+
+local ProgressBarBackground = Instance.new("Frame")
+ProgressBarBackground.Size = UDim2.new(0.6, 0, 0.05, 0)
+ProgressBarBackground.Position = UDim2.new(0.2, 0, 0.6, 0)
+ProgressBarBackground.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ProgressBarBackground.Parent = BackgroundFrame
+
+local ProgressBar = Instance.new("Frame")
+ProgressBar.Size = UDim2.new(0, 0, 1, 0)  -- Start with a width of 0
+ProgressBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+ProgressBar.Parent = ProgressBarBackground
+
+local function simulateLoadingProgress()
+    local loadingTime = 10  -- Set loading duration to 5 seconds
+    local startTime = tick()  -- Capture start time
+
+    while tick() - startTime < loadingTime do
+        local elapsedTime = tick() - startTime
+        local progress = elapsedTime / loadingTime
+        ProgressBar.Size = UDim2.new(progress, 0, 1, 0)
+        wait(0.1)
+    end
+
+    ScreenGui:Destroy()
+
+    -- Execute the external script after the loading screen has been removed
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ScriptGetter/Main/main/TheMimic"))()
+end
+
+-- Start the loading screen and progress simulation
+simulateLoadingProgress()
